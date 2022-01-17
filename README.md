@@ -1,1 +1,1 @@
-Monomer aligner
+Multiple monomer alignment tool for polyketides.
