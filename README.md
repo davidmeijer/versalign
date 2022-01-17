@@ -1,1 +1,1 @@
-# monomer_aligner
+# Monomer aligner.
