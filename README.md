@@ -1,1 +1,1 @@
-# Monomer aligner.
+Monomer aligner
