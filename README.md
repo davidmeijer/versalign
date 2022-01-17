@@ -3,6 +3,6 @@
 ---
 
 ### Dependencies
-- MAFFT (MAFFT)[https://mafft.cbrc.jp/alignment/software/] commmand line tool
+- MAFFT [MAFFT](https://mafft.cbrc.jp/alignment/software/) commmand line tool
 
 ---
