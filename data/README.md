@@ -1,1 +1,0 @@
-`monomer_scoring.txt`: scoring matrix of PK monomers.

@@ -108,7 +108,7 @@ def run_aligner():
     )
     ax = plt.gca()
     ax.tick_params(axis='y', which='major', labelsize=1)
-    plt.savefig('./out/dend.png', dpi=300)
+    plt.savefig('./out/dend.png', dpi=3000)
 
     e_r = {
         0: '-',
@@ -152,7 +152,7 @@ def run_aligner():
             for i in vec:
                 if i != 0:
                     seq.append(e_r[i])
-            handle.write(f'{seq}\n')
+            handle.write(f"{''.join(seq)}\n")
             lens.append(len(seq))
         handle.close()
 
