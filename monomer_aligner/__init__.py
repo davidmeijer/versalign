@@ -1,3 +1,3 @@
-from .align import run_aligner
+from .aligner import run_pairwise_alignment
 
-__all__ = ['run_aligner']
+__all__ = ['run_pairwise_alignment']
