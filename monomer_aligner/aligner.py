@@ -1,20 +1,28 @@
 from __future__ import annotations
 from typing import Optional, List
 
+from scipy.spatial.distance import pdist
+from scipy.cluster.hierarchy import linkage
+
 from .scoring_matrix import PKModule, ScoringMatrix
-from .alignment_matrix import AlignmentMatrix
+from .alignment_matrix import AlignmentMatrix, PairwiseScoreMatrix
+from .parser import parse_fasta, Record
 
 
-class Alignment:
+class PairwiseAlignment:
     def __init__(
         self,
+        name_seq1: str,
         aligned_seq1: List[PKModule],
+        name_seq2: str,
         aligned_seq2: List[PKModule],
         alignment_score: int,
         gap_cost: int,
         end_gap_cost: int
     ) -> None:
+        self.name_seq1 = name_seq1
         self.seq1 = aligned_seq1
+        self.name_seq2 = name_seq2
         self.seq2 = aligned_seq2
         self.score = alignment_score
         self.gap = gap_cost
@@ -32,8 +40,8 @@ class Alignment:
         seq2 = " ".join([m.display_in_alignment() for m in self.seq2])
         msg = (
             f'>> Polyketide backbone alignment:'
-            f'\n>> PK1: {seq1}'
-            f'\n>> PK2: {seq2}'
+            f'\nPK1: {seq1}'
+            f'\nPK2: {seq2}'
             f'\n>> Results: score: {self.score}, identity: {identity} %'
             f'\n>> Options: gap cost: {self.gap}, end gap cost: {self.end_gap}'
         )
@@ -41,24 +49,33 @@ class Alignment:
 
 
 class ModuleSequence:
-    def __init__(self, module_sequence_string: str) -> None:
+    def __init__(self, name: str, module_sequence_string: str) -> None:
+        self.name = name
         self._seq = self.parse(module_sequence_string)
 
     def __str__(self) -> str:
         return ' '.join([m.display_name() for m in self._seq])
 
     def parse(self, module_sequence_string: str) -> List[PKModule]:
+
+        def _get_polyketide_subunit(module: str):
+            try:
+                module = PKModule[module]
+            except KeyError as err:
+                print(f'{err}: unknown polyketide module in sequence')
+            return module
+
         module_list = []
         module = None
         for char in module_sequence_string:
             if char.isalpha() and not module:  # For starting module
                 module = char
             elif char.isalpha():  # New module starts with letter
-                module_list.append(PKModule[module])
+                module_list.append(_get_polyketide_subunit(module))
                 module = char
             else:  # Chars other than letters are assigned to existing module
                 module += char
-        module_list.append(PKModule[module])  # Make sure last module is added
+        module_list.append(_get_polyketide_subunit(module))  # Make sure last module is added
         return module_list
 
     def alignment_matrix(
@@ -172,7 +189,7 @@ class ModuleSequence:
         other: ModuleSequence,
         gap_cost: int,
         end_gap_cost: int
-    ) -> Alignment:
+    ) -> PairwiseAlignment:
         mat = self.alignment_matrix(other, gap_cost, end_gap_cost)
         aligned_self = self.traceback(
             other,
@@ -192,8 +209,10 @@ class ModuleSequence:
             end_gap_cost
         )
         alignment_score = mat.get(-1, -1)
-        alignment = Alignment(
+        alignment = PairwiseAlignment(
+            self.name,
             aligned_self,
+            other.name,
             aligned_other,
             alignment_score,
             gap_cost,
@@ -208,7 +227,76 @@ def run_pairwise_alignment(
     gap_cost: int,
     gap_end_cost: int
 ) -> None:
-    seq1 = ModuleSequence(seq1)
-    seq2 = ModuleSequence(seq2)
+    seq1 = ModuleSequence('seq1', seq1)
+    seq2 = ModuleSequence('seq1', seq2)
     alignment = seq1.optimal_alignment(seq2, gap_cost, gap_end_cost)
+    alignment.display()
+
+
+class MultipleSequenceAlignment:
+    def __init__(
+        self,
+        records: List[Record],
+        gap_cost: int,
+        gap_end_cost: int
+    ) -> None:
+        self._records = [ModuleSequence(r.name, r.seq) for r in records]
+        self._gap_cost = gap_cost
+        self._gap_end_cost = gap_end_cost
+        self._align()
+
+    def _align(self) -> None:
+        def _all_pairwise_scores(seqs1: List[ModuleSequence], seqs2: List[ModuleSequence]):
+            mat = PairwiseScoreMatrix(len(self._records), len(self._records))
+            mat.build(0.0)
+            for idx1, seq1 in enumerate(seqs1):
+                for idx2, seq2 in enumerate(seqs2):
+                    if idx2 < idx1:  # Skip second calculation since matrix is mirrored around diagonal
+                        continue
+                    if idx1 == idx2:
+                        score = 0.0
+                    else:
+                        alignment = seq1.optimal_alignment(
+                            seq2,
+                            self._gap_cost,
+                            self._gap_end_cost
+                        )
+                        score = 100.0 - alignment.percentage_identity()
+                    mat.add(idx1, idx2, score)
+                    mat.add(idx2, idx1, score)
+            return mat
+
+        # Calculate guide tree from all vs. all pairwise similarity scores
+        mat = _all_pairwise_scores(self._records, self._records)  # Get pairwise similarity scores
+        condensed = pdist(mat._matrix)
+        guide_tree = linkage(condensed, method='ward')
+
+        # Progressive alignment based on guide tree:
+        #   1) closest 2 sequences are aligned
+        #   2) iteratively anneal the closest sequence to existing msa
+        #       i) note that already aligned sequences are not updated in a progressive
+        #          alignment; so set the gap penalty to infinity
+        # TODO
+
+
+    def display(self):
+        print('Not yet implemented: multiple sequence alignment display')
+
+
+def multiple_sequence_alignment(
+    records: List[Record],
+    gap_cost: int,
+    gap_end_cost: int
+) -> MultipleSequenceAlignment:
+    msa = MultipleSequenceAlignment(records, gap_cost, gap_end_cost)
+    return msa
+
+
+def run_multiple_sequence_alignment(
+    path: str,
+    gap_cost: int,
+    gap_end_cost: int
+) -> None:
+    records = parse_fasta(path)
+    alignment = multiple_sequence_alignment(records, gap_cost, gap_end_cost)
     alignment.display()
