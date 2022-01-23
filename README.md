@@ -1,9 +1,11 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
 ### Polyketide subunit monomer aligner
 
 This repository contains a small program to perform multiple sequence
-alignment on polyketide backbone structures. 
-
----
+alignment on polyketide backbone structures.
 
 ### Usage
 
@@ -42,6 +44,6 @@ A1A2----A1--
 #### Optional settings
 
 `--gap`: gap penalty (default: 2)
+
 `--end`: end gap penalty (default: 2)
 
----
