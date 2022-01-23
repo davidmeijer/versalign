@@ -97,28 +97,49 @@ class ModuleSequence:
     def insert(self, idx: int, module: Module) -> None:
         self._seq.insert(idx, module)
 
-    def parse(self, module_sequence_string: str) -> List[Module]:
+    def parse(
+        self,
+        module_sequence_string: str,
+        gap: Optional[str] = '-'
+    ) -> List[Module]:
 
-        def _get_polyketide_subunit(module: str):
+        def get_polyketide_subunit(module: str, gap: Optional[str] = '-'):
+            if module == gap:
+                module = 'GAP'
+
             try:
                 module = PKModule[module]
             except KeyError as err:
                 print(f'{err}: unknown polyketide module in sequence')
+
             return module
+
+        def starting(char: char) -> bool:
+            return char.isalpha() or char == PKModule.GAP.display_name()
 
         module_list = []
         module = None
         tag = None
         for char in module_sequence_string:
-            if char.isalpha() and not module:  # For starting module
+
+            if starting(char) and module is None:  # For starting module
                 module = char
-            elif char.isalpha():  # New module starts with letter
-                module_list.append((_get_polyketide_subunit(module), None))
+
+            elif starting(char):  # New module starts with letter
+                module_list.append(
+                    (get_polyketide_subunit(module, gap=gap), None)
+                )
                 module = char
-            else:  # Chars other than letters are assigned to existing module
+
+            else:
+                # Chars other than starting chars are appended to existing
+                # module
                 module += char
+
         # Make sure last module is added:
-        module_list.append((_get_polyketide_subunit(module), tag))
+        module_list.append(
+            (get_polyketide_subunit(module, gap=gap), tag)
+        )
         return module_list
 
     def alignment_matrix(
