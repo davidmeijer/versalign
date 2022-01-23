@@ -31,19 +31,18 @@ A multiple sequence alignment of the sequences displayed above can be performed
 by running `./scripts/run_multiple_sequence_alignment ./data/pk_test.fasta > ./out/pk_test_msa.fasta` 
 from root.
 
-The output file should look like this:
+The output file should look like this (`-` denotes a gap):
 ```text
 >seq3
---/--/B2/--/--/--
+--B2---
 >seq4
---/A2/B2/A1/A1/I1
+-A2B2A1A1I1
 >seq2
-A1/A2/--/A1/A1/--
+A1A2-A1A1-
 >seq1
-A1/A2/--/--/A1/--
+A1A2--A1-
 >seq5
-A1/A2/--/--/A1/--
-
+A1A2--A1-
 ```
 
 #### Optional settings
