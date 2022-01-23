@@ -13,6 +13,8 @@ alignment, using a guide tree constructed from pairwise alignments
 
 ### Usage
 
+#### Creating a multiple sequence alignment
+
 An example input file is shown in `./data/pk_test.fasta`:
 ```text
 >seq1
@@ -54,10 +56,20 @@ A2B2A1A1I1
 CB2A1A1I2
 ```
 
+##### Optional settings
+
+`--gap`: gap penalty (default: 2)
+
+`--end`: end gap penalty (default: 2)
+
+#### Generating new polyketide backbones
+
 A HMM can be constructed from the output MSA file to generate new polyketide
 backbones with the same conserved motif by running 
 `./scripts/generate_polyketide_backbones.py 1000 > ./out/pk_test_generated_backbones.fasta`
 from root. The number of sequences to generated can be set (in this command: 1000).
+
+#### Visualizing conserved region in set of polyketide backbones
 
 A stacked barplot logo can be created from MSA to visualize the HMM conserved
 region by running 
@@ -65,13 +77,6 @@ region by running
 from root.
 
 ![logo](./out/pk_test_hmm_logo.png)
-
-#### Optional settings
-
-`--gap`: gap penalty (default: 2)
-
-`--end`: end gap penalty (default: 2)
-
 
 #### To do
 - Clean up and document code
