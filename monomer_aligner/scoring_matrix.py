@@ -16,7 +16,7 @@ class PKModule(Enum):
 
     def display_name(self):
         if self == PKModule.GAP:
-            return '-'
+            return '--'
         else:
             return self.name
 
