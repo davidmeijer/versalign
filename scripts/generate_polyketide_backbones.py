@@ -6,7 +6,7 @@ sys.path.append(str(path_root))
 
 import argparse
 
-from monomer_aligner import make_logo
+from monomer_aligner import generate_polyketide_backbones
 
 
 def main() -> None:
@@ -17,14 +17,12 @@ def main() -> None:
         help='path to MSA polyketide fasta file'
     )
     parser.add_argument(
-        '--out',
-        type=str,
-        help='output path of logo',
-        required=False,
-        default=None
+        'n',
+        type=int,
+        help='number of polyketide backbones to generate'
     )
     args = parser.parse_args()
-    make_logo(args.fasta, args.out)
+    generate_polyketide_backbones(args.fasta, num=args.n)
 
 
 if __name__ == '__main__':

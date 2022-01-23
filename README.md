@@ -25,29 +25,55 @@ B2
 A2B2A1A1I1
 >seq5
 A1A2A1
+>seq6
+CA2A1
+>seq7
+CB2A1A1I2
 ```
 
 A multiple sequence alignment of the sequences displayed above can be performed
-by running `./scripts/run_multiple_sequence_alignment ./data/pk_test.fasta > ./out/pk_test_msa.fasta` 
+by running 
+`./scripts/run_multiple_sequence_alignment ./data/pk_test.fasta > ./out/pk_test_msa.fasta` 
 from root.
 
 The output file should look like this (`-` denotes a gap):
 ```text
->seq3
---B2---
->seq4
--A2B2A1A1I1
 >seq2
-A1A2-A1A1-
+-A1A2A1A1
 >seq1
-A1A2--A1-
+-A1A2-A1
 >seq5
-A1A2--A1-
+-A1A2-A1
+>seq6
+-CA2-A1
+>seq3
+-B2---
+>seq4
+A2B2A1A1I1
+>seq7
+CB2A1A1I2
 ```
+
+A HMM can be constructed from the output MSA file to generate new polyketide
+backbones with the same conserved motif by running 
+`./scripts/generate_polyketide_backbones.py 1000 > ./out/pk_test_generated_backbones.fasta`
+from root. The number of sequences to generated can be set (in this command: 1000).
+
+A stacked barplot logo can be created from MSA to visualize the HMM conserved
+region by running 
+`./scripts/make_logo_from_msa.py  ./out/pk_test_msa.fasta --out ./out/pk_test_hmm_logo.png`
+from root.
+
+![logo](./out/pk_test_hmm_logo.png)
 
 #### Optional settings
 
 `--gap`: gap penalty (default: 2)
 
 `--end`: end gap penalty (default: 2)
+
+
+#### To do
+- Clean up and document code
+- Add proper sequence logo visualizer
 

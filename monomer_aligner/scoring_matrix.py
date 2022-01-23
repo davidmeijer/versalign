@@ -2,6 +2,9 @@ from __future__ import annotations
 from enum import Enum, auto
 
 
+import matplotlib.pyplot as plt
+
+
 class PKModule(Enum):
     A1, A2, A3 = auto(), auto(), auto()
     B1, B2 = auto(), auto()
@@ -24,6 +27,14 @@ class PKModule(Enum):
         max_length = max([len(m.display_name()) for m in PKModule])
         padding = max_length - len(self.display_name())
         return (' ' * padding) + self.display_name()
+
+    def logo_color(self):
+        cm = plt.get_cmap('gist_rainbow')
+        colors = {
+            module.display_name(): cm(1. * module_idx/len(PKModule))
+            for module_idx, module in enumerate(PKModule)
+        }
+        return colors[self.display_name()]
 
 
 class ScoringMatrix:
