@@ -45,8 +45,8 @@ class PairwiseAlignment:
 
     def display(self):
         identity = self.percentage_identity()
-        seq1 = "".join([m.display_in_alignment() for m, _ in self.seq1])
-        seq2 = "".join([m.display_in_alignment() for m, _ in self.seq2])
+        seq1 = "/".join([m.display_in_alignment() for m, _ in self.seq1])
+        seq2 = "/".join([m.display_in_alignment() for m, _ in self.seq2])
         msg = (
             f'>> Polyketide backbone alignment:'
             f'\nPK1: {seq1}'
@@ -80,7 +80,7 @@ class ModuleSequence:
                              'PKModule list')
 
     def __str__(self) -> str:
-        return ''.join([m.display_name() for m, _ in self._seq])
+        return "/".join([m.display_name() for m, _ in self._seq])
 
     def tag_idx(self) -> None:
         self._seq = [
