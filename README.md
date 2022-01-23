@@ -4,8 +4,12 @@
 
 ### Polyketide subunit monomer aligner
 
-This repository contains a small program to perform multiple sequence
-alignment on polyketide backbone structures.
+This repository contains a small program to perform multiple 
+sequence alignment on polyketide backbone structures. 
+
+The algorithm is a naive implementation of a progressive multiple sequence
+alignment, using a guide tree constructed from pairwise alignments
+(Needleman-Wunsch).
 
 ### Usage
 
