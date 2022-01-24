@@ -80,5 +80,6 @@ from root.
 
 #### To do
 - Clean up and document code
+- MSA scoring
 - Add proper sequence logo visualizer
 
