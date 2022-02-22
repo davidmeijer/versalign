@@ -146,7 +146,8 @@ class ModuleSequence:
         self,
         other: ModuleSequence,
         gap_cost: int,
-        end_gap_cost: int
+        end_gap_cost: int,
+        scoring_matrix: str,
     ) -> AlignmentMatrix:
         # Instantiate zero matrix
         nrows = len(self._seq) + 1
@@ -162,7 +163,7 @@ class ModuleSequence:
             mat.add(0, col, (mat.get(0, col - 1) - end_gap_cost))
 
         # Go through matrix consecutively and calculate the scores
-        score = ScoringMatrix()
+        score = ScoringMatrix(scoring_matrix)
         for col in range(1, ncols):
             for row in range(1, nrows):
 
@@ -237,11 +238,12 @@ class ModuleSequence:
         self,
         other: ModuleSequence,
         gap_cost: int,
-        end_gap_cost: int
+        end_gap_cost: int,
+        scoring_matrix: str
     ) -> PairwiseAlignment:
         """Needleman-Wunsch pairwise sequence alignment
         """
-        mat = self.alignment_matrix(other, gap_cost, end_gap_cost)
+        mat = self.alignment_matrix(other, gap_cost, end_gap_cost, scoring_matrix)
         aligned_self = self.traceback(
             other, len(self._seq), len(other._seq), mat, gap_cost, end_gap_cost
         )
@@ -279,11 +281,13 @@ class MultipleSequenceAlignment:
         self,
         records: List[Record],
         gap_cost: int,
-        gap_end_cost: int
+        gap_end_cost: int,
+        scoring_matrix: str
     ) -> None:
         self._records = [ModuleSequence(r.name, r.seq) for r in records]
         self.gap = gap_cost
         self.end = gap_end_cost
+        self.sm = scoring_matrix
         self.msa = self._align()
 
     def _align(self) -> None:
@@ -308,7 +312,7 @@ class MultipleSequenceAlignment:
 
                     else:
                         alignment = seq1.optimal_alignment(
-                            seq2, self.gap, self.end
+                            seq2, self.gap, self.end, self.sm
                         )
                         score = 100.0 - alignment.percentage_identity()
                     mat.add(idx1, idx2, score)
@@ -338,7 +342,7 @@ class MultipleSequenceAlignment:
                 if len(msa[j1]) == 1 and len(msa[j2]) == 1:
                     seed1, seed2 = msa[j1][0], msa[j2][0]
                     alignment = seed1.optimal_alignment(
-                        seed2, self.gap, self.end
+                        seed2, self.gap, self.end, self.sm
                     )
                     msa[new_idx] = list(alignment.aligned_sequences())
 
@@ -356,10 +360,10 @@ class MultipleSequenceAlignment:
                     back_seq.tag_idx()
 
                     front_alignment = front_seq.optimal_alignment(
-                        leaf, self.gap, self.end
+                        leaf, self.gap, self.end, self.sm
                     )
                     back_alignment = back_seq.optimal_alignment(
-                        leaf, self.gap, self.end
+                        leaf, self.gap, self.end, self.sm
                     )
                     front_score = front_alignment.percentage_identity()
                     back_score = back_alignment.percentage_identity()
@@ -405,10 +409,10 @@ class MultipleSequenceAlignment:
                     msa2_bottom.tag_idx()
 
                     msa1_top_alignment = msa1_bottom.optimal_alignment(
-                        msa2_top, self.gap, self.end
+                        msa2_top, self.gap, self.end, self.sm
                     )
                     msa2_top_alignment = msa2_bottom.optimal_alignment(
-                        msa1_top, self.gap, self.end
+                        msa1_top, self.gap, self.end, self.sm
                     )
                     msa1_top_score = msa1_top_alignment.percentage_identity()
                     msa2_top_score = msa2_top_alignment.percentage_identity()
@@ -481,17 +485,19 @@ class MultipleSequenceAlignment:
 def multiple_sequence_alignment(
     records: List[Record],
     gap_cost: int,
-    gap_end_cost: int
+    gap_end_cost: int,
+    scoring_matrix: str
 ) -> MultipleSequenceAlignment:
-    msa = MultipleSequenceAlignment(records, gap_cost, gap_end_cost)
+    msa = MultipleSequenceAlignment(records, gap_cost, gap_end_cost, scoring_matrix)
     return msa
 
 
 def run_multiple_sequence_alignment(
     path: str,
     gap_cost: int,
-    gap_end_cost: int
+    gap_end_cost: int,
+    scoring_matrix: str
 ) -> None:
     records = parse_fasta(path)
-    alignment = multiple_sequence_alignment(records, gap_cost, gap_end_cost)
+    alignment = multiple_sequence_alignment(records, gap_cost, gap_end_cost, scoring_matrix)
     alignment.display()

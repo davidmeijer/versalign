@@ -117,3 +117,6 @@ dmypy.json
 # Miscellaneous
 .DS_Store
 .idea
+
+# Local
+/_out
