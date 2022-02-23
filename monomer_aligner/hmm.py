@@ -206,7 +206,7 @@ class State:
 
 def get_match_states(
     seqs: List[ModuleSequence],
-    threshold: Optional[float] = 0.0
+    threshold: Optional[float] = 0.5
 ) -> List[bool]:
     threshold_count = len(seqs) * threshold
     seqs = [seq._seq for seq in seqs]
