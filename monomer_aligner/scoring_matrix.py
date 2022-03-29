@@ -1,8 +1,23 @@
 from __future__ import annotations
 from enum import Enum, auto
-
+from typing import Dict
 
 import matplotlib.pyplot as plt
+
+
+def parse_scoring_matrix(path: str) -> Dict[PKModule, Dict[PKModule, int]]:
+    pairwise_scores = {}
+    with open(path, 'r') as handle:
+        header = handle.readline().strip().split()
+        for idx, line in enumerate(handle):
+            k_a = PKModule[header[idx]]
+            pairwise_scores[k_a] = {}
+            k_b = [PKModule[pk] for pk in header]
+            # Parse scores line -- first item is PK module name:
+            scores = map(int, line.strip().split()[1:])
+            for k, score in zip(k_b, scores):
+                pairwise_scores[k_a][k] = score
+    return pairwise_scores
 
 
 class PKModule(Enum):
@@ -38,26 +53,8 @@ class PKModule(Enum):
 
 
 class ScoringMatrix:
-    # Default scoring matrix:
-    #   score  2 if modules are identical
-    #   score -1 if they are non-identical
-    #   score -4 either module is a gap
-
-    # Build default scoring matrix:
-    pairwise_scores = {
-        module1: {
-            module2: (
-                2 if module1 == module2
-                else -4 if (
-                    module1 == PKModule.GAP or
-                    module2 == PKModule.GAP
-                )
-                else -1
-            )
-            for module2 in PKModule
-        }
-        for module1 in PKModule
-    }
+    def __init__(self, path: str) -> None:
+        self.pairwise_scores = parse_scoring_matrix(path)
 
     def __call__(self, module1: PKModule, module2: PKModule) -> float:
         try:  # Validate scoring matrix on first call
