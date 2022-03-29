@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Union, Dict, List
+from typing import Optional, Union, Dict, List, Tuple
 from enum import Enum, auto
 from random import random
 from math import log
@@ -154,7 +154,7 @@ class HMM:
                 emissions.append((sample(self.e_i), tag))
         return emissions
 
-    def logo(self, save_to: Optional[str] = None) -> None:
+    def logo(self, save_to: Optional[str] = None) -> List[List[Tuple[PKModule, float]]]:
         nmatch = 0
         state_logits = []
         for idx, match_state in enumerate(self.match_states):
@@ -168,6 +168,7 @@ class HMM:
                 state_logits.append(probs)
                 nmatch += 1
         draw_logo(state_logits, save_to)
+        return state_logits
 
 
 class HMMStartEnd(Enum):
@@ -216,6 +217,14 @@ def get_match_states(
     ]
     return match_states
 
+def print_logits(logits: List[List[Tuple[PKModule, float]]]) -> None: 
+    modules, _ = map(list, list(zip(*logits[0])))
+    header = ",".join([m.name for m in  modules])
+    print(header)
+    for match_state in logits:
+        _, scores = map(list, list(zip(*match_state)))
+        scores = ",".join(list(map(str, scores)))
+        print(scores)
 
 def make_logo(path: str, save_to: Optional[str] = None) -> None:
     fasta = parse_fasta(path)
@@ -223,7 +232,8 @@ def make_logo(path: str, save_to: Optional[str] = None) -> None:
     match_states = get_match_states(seqs)
     hmm = HMM(match_states)
     hmm.train(seqs)
-    hmm.logo(save_to)
+    logits = hmm.logo(save_to)
+    print_logits(logits)
 
 
 def generate_polyketide_backbones(path: str, num: int) -> None:
