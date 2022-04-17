@@ -77,9 +77,3 @@ region by running
 from root.
 
 ![logo](./out/pk_test_hmm_logo.png)
-
-#### To do
-- Clean up and document code
-- MSA scoring
-- Add proper sequence logo visualizer
-
