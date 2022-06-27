@@ -114,13 +114,13 @@ def cluster_polyketide_backbones(msa: str, out_dir: str) -> None:
     linkage_matrix = linkage(condensed, method="ward")
     newick = to_newick(linkage_matrix, labels)
 
-    fo = open(os.path.join(out_dir, "tree.nwk"), "w")
+    fo = open(os.path.join(out_dir, "_tree.nwk"), "w")
     fo.write(newick)
     fo.close()
 
     msa_length = len(records[0]._seq)
 
-    fo = open(os.path.join(out_dir, "itol_annotation.txt"), "w")
+    fo = open(os.path.join(out_dir, "_tree_subunit_annotation.txt"), "w")
     fo.write("DATASET_DOMAINS\n")
     fo.write("SEPARATOR COMMA\n")
     fo.write("DATASET_LABEL,polyketide_backbones\n")
