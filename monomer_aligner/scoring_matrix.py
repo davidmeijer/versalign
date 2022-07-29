@@ -28,8 +28,8 @@ class PKModule(Enum):
     E1, E2 = auto(), auto()
     F1, F2 = auto(), auto()
     G1, G2 = auto(), auto()
-    H = auto()
-    I1, I2 = auto(), auto()
+    H1, H2 = auto(), auto()
+    O = auto()
     GAP = auto()  # Denotes gap in PK module sequence
 
     def display_name(self):
