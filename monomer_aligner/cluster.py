@@ -67,26 +67,43 @@ def to_newick(linkage_matrix: np.ndarray, labels: ty.List[str]) -> str:
 
 def unit_to_color(unit: str) -> str:
     colors = {
-        "A1": "#E50000",
-        "A2": "#DC143C",
-        "A3": "#FF0000",
-        "B1": "#0343DF",
-        "B2": "#0000FF",
-        "C": "#FF00FF",
-        "D": "#FFD700",
-        "E1": "#ED7014",
-        "E2": "#8D4004",
-        "F1": "#FDA172",
-        "F2": "#ED7117",
-        "G1": "#FC6A03",
-        "G2": "#ED820E",
-        "H1": "#008080",
-        "H2": "#029386",
-        "O": "#D3D3D3",
+        "A1": "#CD6155",
+        "A2": "#CD6155",
+        "A3": "#CD6155",
+        "A4": "#CD6155",
+        "A5": "#CD6155",
+        "B1": "#5499C7",
+        "B2": "#5499C7",
+        "B3": "#5499C7",
+        "B4": "#5499C7",
+        "B5": "#5499C7",
+        "C1": "#5499C7",
+        "D1": "#5499C7",
+        "E1": "#F4D03F",
+        "E1a": "#F4D03F",
+        "E1b": "#F4D03F",
+        "E1c": "#EB984E", 
+        "E2": "#F4D03F",
+        "E2a": "#F4D03F",
+        "E2b": "#F4D03F",
+        "E2c": "#EB984E", 
+        "E3": "#F4D03F",
+        "E3a": "#F4D03F",
+        "E3b": "#F4D03F",
+        "E3c": "#EB984E", 
+        "F1": "#5D6D7E",
+        "F2": "#5D6D7E",
+        "SMILES": "#CACFD2"
     }
-    return colors[unit]
+    if unit in colors: return colors[unit]
+    else: return "#AF7AC5"
 
-
+def get_name(item):
+    try: 
+        name = item.name
+    except:
+        name = "~"
+    return name
 
 def cluster_polyketide_backbones(msa: str, out_dir: str) -> None:
     records = parse_fasta(msa)  # ty.List[Record]
@@ -128,11 +145,11 @@ def cluster_polyketide_backbones(msa: str, out_dir: str) -> None:
     fo.write("SEPARATOR COMMA\n")
     fo.write("DATASET_LABEL,polyketide_backbones\n")
     fo.write("COLOR,#ff0000\n")
-    # fo.write("WIDTH,400\n")
+    fo.write("WIDTH,2000\n")
     fo.write("DATA\n")
     for r in records:
         label = r.name 
-        seq = [item.name for item, _ in r._seq]
+        seq = [get_name(item) for item, _ in r._seq]
         subunits = ",".join([
             f"RE|{idx}|{idx + 1}|{unit_to_color(unit)}|{unit}" 
             for idx, unit in enumerate(seq)

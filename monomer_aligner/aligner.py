@@ -67,20 +67,29 @@ class ModuleSequence:
         if isinstance(module_sequence, str):
             self._seq = self.parse(module_sequence)
         elif isinstance(module_sequence, list):
-            if all([
-                isinstance(m, PKModule) and
-                (isinstance(m_idx, int) or m_idx is None)
-                for m, m_idx in module_sequence
-            ]):
-                self._seq = module_sequence
-            else:
-                raise ValueError('modules are not of type PKModule')
+            self._seq = module_sequence
+            # if all([
+            #     isinstance(m, PKModule) and
+            #     (isinstance(m_idx, int) or m_idx is None)
+            #     for m, m_idx in module_sequence
+            # ]):
+                # self._seq = module_sequence
+            # else:
+            #     raise ValueError('modules are not of type PKModule')
         else:
             raise ValueError('module sequence is not of type str or '
                              'PKModule list')
 
     def __str__(self) -> str:
-        return "".join([m.display_name() for m, _ in self._seq])
+        items = []
+        for m, _ in self._seq:
+            try:
+                name = m.display_name()
+            except:
+                name = m
+            items.append(name)
+
+        return " ".join(items)
 
     def tag_idx(self) -> None:
         self._seq = [
@@ -110,36 +119,45 @@ class ModuleSequence:
             try:
                 module = PKModule[module]
             except KeyError as err:
-                print(f'{err}: unknown polyketide module in sequence')
+                pass
+                # print(f'{err}: unknown polyketide module in sequence')
 
             return module
 
         def starting(char: char) -> bool:
             return char.isalpha() or char == PKModule.GAP.display_name()
+        
+        # module_list = []
+        # module = None
+        # tag = None
+        # for char in module_sequence_string:
+
+        #     if starting(char) and module is None:  # For starting module
+        #         module = char
+
+        #     elif starting(char):  # New module starts with letter
+        #         module_list.append(
+        #             (get_polyketide_subunit(module, gap=gap), None)
+        #         )
+        #         module = char
+
+        #     else:
+        #         # Chars other than starting chars are appended to existing
+        #         # module
+        #         module += char
 
         module_list = []
-        module = None
-        tag = None
-        for char in module_sequence_string:
-
-            if starting(char) and module is None:  # For starting module
-                module = char
-
-            elif starting(char):  # New module starts with letter
-                module_list.append(
-                    (get_polyketide_subunit(module, gap=gap), None)
-                )
-                module = char
-
-            else:
-                # Chars other than starting chars are appended to existing
-                # module
-                module += char
+        tag = None 
+        for module in module_sequence_string.split(" "):
+            module_list.append(
+                (get_polyketide_subunit(module, gap=gap), None)
+            )
 
         # Make sure last module is added:
         module_list.append(
             (get_polyketide_subunit(module, gap=gap), tag)
         )
+
         return module_list
 
     def alignment_matrix(
