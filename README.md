@@ -3,7 +3,7 @@
 
 ---
 
-:warning: This project is currently not maintained and README.md is not up to adte -- part of code base is currently being repurposed for [retromole](https://retromole.com/) :warning:
+:warning: This project is currently not maintained and README.md is not up to date. Part of code base is currently being repurposed for [retromole](https://retromole.com/) which will be released soon :warning:
 
 ---
 
