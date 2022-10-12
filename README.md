@@ -1,5 +1,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
+
+---
+
+:warning: This project is currently not maintained and README.md is not up to adte -- part of code base is currently being repurposed for [retromole](https://retromole.com/) :warning:
+
 ---
 
 ### Polyketide subunit monomer aligner
