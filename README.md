@@ -2,7 +2,7 @@
     <img 
         src="https://github.com/davidmeijer/versalign/blob/main/logo.png" 
         height="150"
-    >
+    />
 </p>
 
 <p align="center">
@@ -12,30 +12,6 @@
             src="https://github.com/davidmeijer/versalign/actions/workflows/tests.yml/badge.svg" 
         />
     </a>
-    <!-- <a href="https://pypi.org/project/versalign">
-        <img 
-            alt="PyPI" 
-            src="https://img.shields.io/pypi/v/versalign" 
-        />
-    </a> -->
-    <!-- <a href="https://pypi.org/project/versalign">
-        <img 
-            alt="PyPI - Python Version" 
-            src="https://img.shields.io/pypi/pyversions/versalign" 
-        />
-    </a> -->
-    <!-- <a href="https://github.com/davidmeijer/versalign/blob/main/LICENSE">
-        <img 
-            alt="PyPI - License" 
-            src="https://img.shields.io/pypi/l/versalign" 
-        />
-    </a> -->
-    <!-- <a href="https://codecov.io/gh/davidmeijer/versalign/branch/main">
-        <img 
-            src="https://codecov.io/gh/davidmeijer/versalign/branch/main/graph/badge.svg" 
-            alt="Codecov status" 
-        />
-    </a>   -->
     <a href="https://github.com/cthoyt/cookiecutter-python-package">
         <img 
             alt="Cookiecutter template from @cthoyt" 
@@ -54,12 +30,6 @@
             alt="Contributor Covenant"
         />
     </a>
-    <!-- <a href="https://doi.org/<doi>">
-        <img 
-            src="https://zenodo.org/badge/DOI/<doi>.svg" 
-            alt="DOI"
-        />
-    </a> -->
 </p>
 
 Versalign is Python package that allows you to create multiple sequence alignments for arbitrary lists of objects.
