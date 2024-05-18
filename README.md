@@ -1,84 +1,153 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+<p align="center">
+    <img 
+        src="https://github.com/davidmeijer/versalign/blob/main/logo.png" 
+        height="150"
+    >
+</p>
 
+<p align="center">
+    <a href="https://github.com/davidmeijer/versalign/actions/workflows/tests.yml">
+        <img 
+            alt="Tests" 
+            src="https://github.com/davidmeijer/versalign/actions/workflows/tests.yml/badge.svg" 
+        />
+    </a>
+    <!-- <a href="https://pypi.org/project/versalign">
+        <img 
+            alt="PyPI" 
+            src="https://img.shields.io/pypi/v/versalign" 
+        />
+    </a> -->
+    <!-- <a href="https://pypi.org/project/versalign">
+        <img 
+            alt="PyPI - Python Version" 
+            src="https://img.shields.io/pypi/pyversions/versalign" 
+        />
+    </a> -->
+    <!-- <a href="https://github.com/davidmeijer/versalign/blob/main/LICENSE">
+        <img 
+            alt="PyPI - License" 
+            src="https://img.shields.io/pypi/l/versalign" 
+        />
+    </a> -->
+    <!-- <a href="https://codecov.io/gh/davidmeijer/versalign/branch/main">
+        <img 
+            src="https://codecov.io/gh/davidmeijer/versalign/branch/main/graph/badge.svg" 
+            alt="Codecov status" 
+        />
+    </a>   -->
+    <a href="https://github.com/cthoyt/cookiecutter-python-package">
+        <img 
+            alt="Cookiecutter template from @cthoyt" 
+            src="https://img.shields.io/badge/Cookiecutter-snekpack-blue" 
+        />
+    </a>
+    <a href="https://github.com/psf/black">
+        <img 
+            src="https://img.shields.io/badge/Code%20style-black-000000.svg" 
+            alt="Code style: black" 
+        />
+    </a>
+    <a href="https://github.com/davidmeijer/versalign/blob/main/.github/CODE_OF_CONDUCT.md">
+        <img 
+            src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" 
+            alt="Contributor Covenant"
+        />
+    </a>
+    <!-- <a href="https://doi.org/<doi>">
+        <img 
+            src="https://zenodo.org/badge/DOI/<doi>.svg" 
+            alt="DOI"
+        />
+    </a> -->
+</p>
 
----
+Versalign is Python package that allows you to create multiple sequence alignments for arbitrary lists of objects.
 
-:warning: This project is currently not maintained and README.md is not up to date. Part of code base is currently being repurposed for [retromole](https://retromole.com/) which will be released soon :warning:
+<!-- ## 💪 Getting Started
 
----
+... -->
 
-### Polyketide subunit monomer aligner
+## 🚀 Installation
 
-This repository contains a small program to perform multiple 
-sequence alignment on polyketide backbone structures. 
+<!-- The most recent release can be installed from
+[PyPI](https://pypi.org/project/versalign/) with:
 
-The algorithm is a naive implementation of a progressive multiple sequence
-alignment, using a guide tree constructed from pairwise alignments
-(Needleman-Wunsch).
+```shell
+pip install versalign
+``` -->
 
-### Usage
+The most recent code and data can be installed directly from GitHub with:
 
-#### Creating a multiple sequence alignment
-
-An example input file is shown in `./data/pk_test.fasta`:
-```text
->seq1
-A1A2A1
->seq2
-A1A2A1A1
->seq3
-B2
->seq4
-A2B2A1A1I1
->seq5
-A1A2A1
->seq6
-CA2A1
->seq7
-CB2A1A1I2
+```shell
+pip install git+https://github.com/davidmeijer/versalign.git
 ```
 
-A multiple sequence alignment of the sequences displayed above can be performed
-by running 
-`./scripts/run_multiple_sequence_alignment ./data/pk_test.fasta > ./out/pk_test_msa.fasta` 
-from root.
+## 👐 Contributing
 
-The output file should look like this (`-` denotes a gap):
-```text
->seq2
--A1A2A1A1
->seq1
--A1A2-A1
->seq5
--A1A2-A1
->seq6
--CA2-A1
->seq3
--B2---
->seq4
-A2B2A1A1I1
->seq7
-CB2A1A1I2
+Contributions, whether filing an issue, making a pull request, or forking, are appreciated. See
+[CONTRIBUTING.md](https://github.com/davidmeijer/versalign/blob/main/.github/CONTRIBUTING.md) for more information on getting involved.
+
+## 👋 Attribution
+
+### ⚖️ License
+
+The code in this package is licensed under the MIT License.
+
+### 🍪 Cookiecutter
+
+This package was created with [@audreyfeldroy](https://github.com/audreyfeldroy)'s
+[cookiecutter](https://github.com/cookiecutter/cookiecutter) package using [@cthoyt](https://github.com/cthoyt)'s
+[cookiecutter-snekpack](https://github.com/cthoyt/cookiecutter-snekpack) template.
+
+## 🛠️ For Developers
+
+<details>
+  <summary>See developer instructions</summary>
+
+The final section of the README is for if you want to get involved by making a code contribution.
+
+### Development Installation
+
+To install in development mode, use the following:
+
+```bash
+git clone git+https://github.com/davidmeijer/versalign.git
+cd versalign
+pip install -e .
 ```
 
-##### Optional settings
+### 🥼 Testing
 
-`--gap`: gap penalty (default: 2)
+After cloning the repository and installing `tox` with `pip install tox`, the unit tests in the `tests/` folder can be
+run reproducibly with:
 
-`--end`: end gap penalty (default: 2)
+```shell
+tox
+```
 
-#### Generating new polyketide backbones
+Additionally, these tests are automatically re-run with each commit in a
+[GitHub Action](https://github.com/davidmeijer/versalign/actions?query=workflow%3ATests).
 
-A HMM can be constructed from the output MSA file to generate new polyketide
-backbones with the same conserved motif by running 
-`./scripts/generate_polyketide_backbones.py 1000 > ./out/pk_test_generated_backbones.fasta`
-from root. The number of sequences to generated can be set (in this command: 1000).
+### 📦 Making a Release
 
-#### Visualizing conserved region in set of polyketide backbones
+After installing the package in development mode and installing
+`tox` with `pip install tox`, the commands for making a new release are contained within the `finish` environment
+in `tox.ini`. Run the following from the shell:
 
-A stacked barplot logo can be created from MSA to visualize the HMM conserved
-region by running 
-`./scripts/make_logo_from_msa.py  ./out/pk_test_msa.fasta --out ./out/pk_test_hmm_logo.png`
-from root.
+```shell
+tox -e finish
+```
 
-![logo](./out/pk_test_hmm_logo.png)
+This script does the following:
+
+1. Uses [Bump2Version](https://github.com/c4urself/bump2version) to switch the version number in the `setup.cfg`,
+   `src/versalign/version.py`, and [`docs/source/conf.py`](docs/source/conf.py) to not have the `-dev` suffix
+2. Packages the code in both a tar archive and a wheel using [`build`](https://github.com/pypa/build)
+3. Uploads to PyPI using [`twine`](https://github.com/pypa/twine). Be sure to have a `.pypirc` file
+   configured to avoid the need for manual input at this step
+4. Push to GitHub. You'll need to make a release going with the commit where the version was bumped.
+5. Bump the version to the next patch. If you made big changes and want to bump the version by minor, you can
+   use `tox -e bumpversion -- minor` after.
+
+</details>
