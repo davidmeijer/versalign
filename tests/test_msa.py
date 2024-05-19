@@ -6,7 +6,7 @@ import typing as ty
 import unittest
 
 from versalign.motif import Motif
-from versalign.msa import pairwise_scoring_matrix, multiple_sequence_alignment
+from versalign.msa import multiple_sequence_alignment, pairwise_scoring_matrix
 from versalign.sequence import Sequence
 
 
@@ -118,8 +118,15 @@ class TestMultipleSequenceAlignment(unittest.TestCase):
         result = multiple_sequence_alignment(seqs, 2, 1, score_func)
         self.assertEqual(len(result), 3)
         self.assertTrue(all(isinstance(seq, Sequence) for seq in result))
+        self.assertTrue(all([len(seq) == 12 for seq in result]))
 
-        # TODO: remove this and add more tests to check if all sequences have the same length.
-        for seq in result:
-            print(seq)
-            print(len(seq))
+    def test_multiple_sequence_alignment_2(self) -> None:
+        """Test the multiple_sequence_alignment function."""
+        seq1 = Sequence([A(), A(), A(), A()])
+        seq2 = Sequence([B(), B(), B(), B()])
+        seq3 = Sequence([B(), B(), B(), B()])
+        seqs = [seq1, seq2, seq3]
+        result = multiple_sequence_alignment(seqs, 2, 1, score_func)
+        self.assertEqual(len(result), 3)
+        self.assertTrue(all(isinstance(seq, Sequence) for seq in result))
+        self.assertTrue(all([len(seq) == 8 for seq in result]))

@@ -64,7 +64,7 @@ class Sequence:
         :rtype: ty.Iterator[Motif]
         """
         return iter(self._motifs)
-    
+
     def __str__(self) -> str:
         """Convert the sequence to a string representation.
 

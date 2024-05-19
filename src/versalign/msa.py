@@ -92,6 +92,10 @@ def merge_singles(
         algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH,
     )
 
+    # Clear all tags.
+    single1_aligned.clear_tags()
+    single2_aligned.clear_tags()
+
     return [single1_aligned, single2_aligned]
 
 
@@ -143,10 +147,10 @@ def merge_single_with_cluster(
     )
 
     if score_with_first >= score_with_last:
-        anchor, new = single_aligned_with_first, first_aligned
+        new, anchor = single_aligned_with_first, first_aligned
         others = cluster[1:]
     else:
-        anchor, new = single_aligned_with_last, last_aligned
+        new, anchor = single_aligned_with_last, last_aligned
         others = cluster[:-1]
 
     for motif_idx, motif in enumerate(anchor):
