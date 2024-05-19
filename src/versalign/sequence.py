@@ -2,6 +2,7 @@
 
 """Implementation of sequence object comprising a list of motifs."""
 
+import logging
 import typing as ty
 
 from .motif import Motif
@@ -19,13 +20,17 @@ class Sequence:
         :type motifs: ty.Optional[ty.List[Motif]]
         :raises ValueError: If any element in the list is not a motif.
         """
+        logger = logging.getLogger(__name__)
+
         self._identifier = identifier
 
         if motifs is None:
             motifs = []
 
         if not all(isinstance(motif, Motif) for motif in motifs):
-            raise ValueError("All elements in the list must be motifs.")
+            msg = "All elements in the list must be motifs."
+            logger.error(msg)
+            raise ValueError(msg)
 
         self._motifs = motifs
 
@@ -56,8 +61,12 @@ class Sequence:
         :type motif: Motif
         :raises ValueError: If the motif is not a motif object.
         """
+        logger = logging.getLogger(__name__)
+
         if not isinstance(motif, Motif):
-            raise ValueError("The motif must be a motif object.")
+            msg = "The motif must be a motif object."
+            logger.error(msg)
+            raise ValueError(msg)
 
         self._motifs[index] = motif
 
@@ -95,8 +104,12 @@ class Sequence:
         :type motif: Motif
         :raises ValueError: If the motif is not a motif object.
         """
+        logger = logging.getLogger(__name__)
+
         if not isinstance(motif, Motif):
-            raise ValueError("The motif must be a motif object.")
+            msg = "The motif must be a motif object."
+            logger.error(msg)
+            raise ValueError(msg)
 
         self._motifs.insert(index, motif)
 

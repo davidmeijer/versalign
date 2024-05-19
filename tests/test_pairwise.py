@@ -10,6 +10,7 @@ from versalign.pairwise import PairwiseAlignment, align_pairwise
 from versalign.sequence import Sequence
 
 GLOBAL = PairwiseAlignment.NEEDLEMAN_WUNSCH
+LOCAL = PairwiseAlignment.SMITH_WATERMAN
 
 
 class A(Motif):
@@ -74,14 +75,15 @@ def score_func(a: Motif, b: Motif) -> int:
     return -1
 
 
-class TestPairwise(unittest.TestCase):
-    """Test pairwise sequence alignment."""
+class TestPairwiseNeedlemanWunsch(unittest.TestCase):
+    """Test pairwise alignment using Needleman-Wunsch algorithm."""
 
     def test_align_sequence_1(self):
         """Test aligning two sequences."""
         seq_a = Sequence("seq_a", [A(), A(), A(), A()])
         seq_b = Sequence("seq_b", [B(), B(), B(), B()])
-        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
+        options = {"gap_penalty": 2, "end_gap_penalty": 1}
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, score_func, GLOBAL, options)
         expected_a = [Gap(), Gap(), Gap(), Gap(), A(), A(), A(), A()]
         expected_b = [B(), B(), B(), B(), Gap(), Gap(), Gap(), Gap()]
         self.assertEqual(result_a._motifs, expected_a)
@@ -91,7 +93,8 @@ class TestPairwise(unittest.TestCase):
         """Test aligning two sequences."""
         seq_a = Sequence("seq_a", [A(), A(), A(), A()])
         seq_b = Sequence("seq_b", [A(), A(), A(), A()])
-        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
+        options = {"gap_penalty": 2, "end_gap_penalty": 1}
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, score_func, GLOBAL, options)
         expected_a = [A(), A(), A(), A()]
         expected_b = [A(), A(), A(), A()]
         self.assertEqual(result_a._motifs, expected_a)
@@ -101,7 +104,8 @@ class TestPairwise(unittest.TestCase):
         """Test aligning two sequences."""
         seq_a = Sequence("seq_a", [A(), A(), B(), B()])
         seq_b = Sequence("seq_b", [B(), B(), C(), C()])
-        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
+        options = {"gap_penalty": 2, "end_gap_penalty": 1}
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, score_func, GLOBAL, options)
         expected_a = [A(), A(), B(), B(), Gap(), Gap()]
         expected_b = [Gap(), Gap(), B(), B(), C(), C()]
         self.assertEqual(result_a._motifs, expected_a)
@@ -111,8 +115,24 @@ class TestPairwise(unittest.TestCase):
         """Test aligning two sequences."""
         seq_a = Sequence("seq_a", [A(), A(), A()])
         seq_b = Sequence("seq_b", [A(), A(), A(), A()])
-        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 1, 2, score_func, GLOBAL)
+        options = {"gap_penalty": 2, "end_gap_penalty": 1}
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, score_func, GLOBAL, options)
         expected_a = [Gap(), A(), A(), A()]
         expected_b = [A(), A(), A(), A()]
+        self.assertEqual(result_a._motifs, expected_a)
+        self.assertEqual(result_b._motifs, expected_b)
+
+
+class TestPairwiseSmithWaterman(unittest.TestCase):
+    """Test pairwise alignment using Smith-Waterman algorithm."""
+
+    def test_align_sequence_1(self):
+        """Test aligning two sequences."""
+        seq_a = Sequence("seq_a", [A(), A()])
+        seq_b = Sequence("seq_b", [B(), B(), A(), A(), B()])
+        options = {"gap_penalty": 2}
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, score_func, LOCAL, options)
+        expected_a = [A(), A()]
+        expected_b = [A(), A()]
         self.assertEqual(result_a._motifs, expected_a)
         self.assertEqual(result_b._motifs, expected_b)

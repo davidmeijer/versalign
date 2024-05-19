@@ -2,6 +2,7 @@
 
 """Implementation of the scoring matrix for sequence alignment."""
 
+import logging
 import typing as ty
 
 import numpy as np
@@ -69,11 +70,15 @@ class Matrix:
         :rtype: np.ndarray
         :raises ValueError: If the fill value is not an integer or float.
         """
+        logger = logging.getLogger(__name__)
+
         if isinstance(fill, float):
             return np.full((self._nrows, self._ncols), fill, dtype=np.float32)
 
         else:
-            raise ValueError("Fill value must be a float.")
+            msg = "Fill value must be a float."
+            logger.error(msg)
+            raise ValueError(msg)
 
     def transpose(self) -> np.ndarray:
         """Transpose the matrix.
@@ -95,18 +100,26 @@ class Matrix:
         :raises ValueError: If the row or column index is out of bounds.
         :raises ValueError: If the value is not an integer.
         """
+        logger = logging.getLogger(__name__)
+
         if not (0 <= row < self._nrows):
-            raise ValueError("Row index out of bounds.")
+            msg = "Row index out of bounds."
+            logger.error(msg)
+            raise ValueError(msg)
 
         if not (0 <= col < self._ncols):
-            raise ValueError("Column index out of bounds.")
+            msg = "Column index out of bounds."
+            logger.error(msg)
+            raise ValueError(msg)
 
         if (
             not isinstance(value, int)
             and not isinstance(value, float)
             and not isinstance(value, np.float32)
         ):
-            raise ValueError("Value must be an integer or float.")
+            msg = "Value must be an integer or float."
+            logger.error(msg)
+            raise ValueError(msg)
 
         if isinstance(value, int):
             value = float(value)
@@ -124,11 +137,17 @@ class Matrix:
         :rtype: float
         :raises ValueError: If the row or column index is out of bounds.
         """
+        logger = logging.getLogger(__name__)
+
         if not (0 <= row < self._nrows):
-            raise ValueError("Row index out of bounds.")
+            msg = "Row index out of bounds."
+            logger.error(msg)
+            raise ValueError(msg)
 
         if not (0 <= col < self._ncols):
-            raise ValueError("Column index out of bounds.")
+            msg = "Column index out of bounds."
+            logger.error(msg)
+            raise ValueError(msg)
 
         return self._matrix[row, col]
 

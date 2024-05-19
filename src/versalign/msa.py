@@ -86,10 +86,9 @@ def merge_singles(
     single1_aligned, single2_aligned, _ = align_pairwise(
         seq_a=single1,
         seq_b=single2,
-        gap_penalty=gap_penalty,
-        end_gap_penalty=end_gap_penalty,
         score_func=score_func,
         algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH,
+        options={"gap_penalty": gap_penalty, "end_gap_penalty": end_gap_penalty},
     )
 
     # Clear all tags.
@@ -132,18 +131,16 @@ def merge_single_with_cluster(
     single_aligned_with_first, first_aligned, score_with_first = align_pairwise(
         seq_a=single,
         seq_b=first,
-        gap_penalty=gap_penalty,
-        end_gap_penalty=end_gap_penalty,
         score_func=score_func,
         algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH,
+        options={"gap_penalty": gap_penalty, "end_gap_penalty": end_gap_penalty},
     )
     single_aligned_with_last, last_aligned, score_with_last = align_pairwise(
         seq_a=single,
         seq_b=last,
-        gap_penalty=gap_penalty,
-        end_gap_penalty=end_gap_penalty,
         score_func=score_func,
         algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH,
+        options={"gap_penalty": gap_penalty, "end_gap_penalty": end_gap_penalty},
     )
 
     if score_with_first >= score_with_last:
@@ -209,20 +206,18 @@ def merge_clusters(
         align_pairwise(
             seq_a=msa1_bottom,
             seq_b=msa2_top,
-            gap_penalty=gap_penalty,
-            end_gap_penalty=end_gap_penalty,
             score_func=score_func,
             algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH,
+            options={"gap_penalty": gap_penalty, "end_gap_penalty": end_gap_penalty},
         )
     )
     msa1_top_aligned_to_msa2_bottom, msa2_bottom_aligned_to_msa1_top, msa2_top_score = (
         align_pairwise(
             seq_a=msa1_top,
             seq_b=msa2_bottom,
-            gap_penalty=gap_penalty,
-            end_gap_penalty=end_gap_penalty,
             score_func=score_func,
             algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH,
+            options={"gap_penalty": gap_penalty, "end_gap_penalty": end_gap_penalty},
         )
     )
 
@@ -369,4 +364,6 @@ def multiple_sequence_alignment(
     if len(clusters) == 1:
         return msa[clusters[0]]
     else:
-        raise ValueError(f"MSA incomplete. Found {len(clusters)} unaligned clusters.")
+        msg = f"MSA incomplete. Found {len(clusters)} unaligned clusters."
+        logger.error(msg)
+        raise ValueError(msg)
