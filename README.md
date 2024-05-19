@@ -7,29 +7,21 @@
 
 <p align="center">
     <a href="https://github.com/davidmeijer/versalign/actions/workflows/tests.yml">
-        <img 
-            alt="Tests" 
-            src="https://github.com/davidmeijer/versalign/actions/workflows/tests.yml/badge.svg" 
-        />
-    </a>
+        <img alt="Tests" src="https://github.com/davidmeijer/versalign/actions/workflows/tests.yml/badge.svg" /></a>
+    <a href="https://pypi.org/project/versalign">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/versalign" /></a>
+    <a href="https://pypi.org/project/versalign">
+        <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/versalign" /></a>
+    <a href="https://github.com/davidmeijer/versalign/blob/main/LICENSE">
+        <img alt="PyPI - License" src="https://img.shields.io/pypi/l/versalign" /></a>
     <a href="https://github.com/cthoyt/cookiecutter-python-package">
-        <img 
-            alt="Cookiecutter template from @cthoyt" 
-            src="https://img.shields.io/badge/Cookiecutter-snekpack-blue" 
-        />
-    </a>
+        <img alt="Cookiecutter template from @cthoyt" src="https://img.shields.io/badge/Cookiecutter-snekpack-blue" /></a>
     <a href="https://github.com/psf/black">
-        <img 
-            src="https://img.shields.io/badge/Code%20style-black-000000.svg" 
-            alt="Code style: black" 
-        />
-    </a>
+        <img src="https://img.shields.io/badge/Code%20style-black-000000.svg" alt="Code style: black" /></a>
     <a href="https://github.com/davidmeijer/versalign/blob/main/.github/CODE_OF_CONDUCT.md">
-        <img 
-            src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" 
-            alt="Contributor Covenant"
-        />
-    </a>
+        <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant"/></a>
+     <!-- <a href="https://doi.org/<doi>">
+        <img src="https://zenodo.org/badge/DOI/<doi>.svg" alt="DOI"></a> -->
 </p>
 
 Versalign is Python package that allows you to create multiple sequence alignments for arbitrary lists of objects.
@@ -68,10 +60,9 @@ seq_b = Sequence("seq_b", [B(), B(), B()])
 aligned_seq_a, aligned_seq_b, score = align_pairwise(
     seq_a=seq_a,
     seq_b=seq_b,
-    gap_penalty=2,
-    end_gap_penalty=1,
     score_func=score_func,
-    algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH
+    algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH,
+    options={"gap_penalty": 2, "end_gap_penalty": 1},
 )
 
 print(aligned_seq_a)
@@ -107,12 +98,12 @@ for seq in result:
 
 ## 🚀 Installation
 
-<!-- The most recent release can be installed from
+The most recent release can be installed from
 [PyPI](https://pypi.org/project/versalign/) with:
 
 ```shell
 pip install versalign
-``` -->
+```
 
 The most recent code and data can be installed directly from GitHub with:
 
