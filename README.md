@@ -20,8 +20,8 @@
         <img src="https://img.shields.io/badge/Code%20style-black-000000.svg" alt="Code style: black" /></a>
     <a href="https://github.com/davidmeijer/versalign/blob/main/.github/CODE_OF_CONDUCT.md">
         <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant"/></a>
-     <!-- <a href="https://doi.org/<doi>">
-        <img src="https://zenodo.org/badge/DOI/<doi>.svg" alt="DOI"></a> -->
+     <a href="https://doi.org/10.5281/zenodo.11216453">
+        <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.11216453.svg" alt="DOI"></a>
 </p>
 
 Versalign is Python package that allows you to create multiple sequence alignments for arbitrary lists of objects.
