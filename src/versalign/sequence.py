@@ -57,6 +57,22 @@ class Sequence:
 
         self._motifs[index] = motif
 
+    def __iter__(self) -> ty.Iterator[Motif]:
+        """Return an iterator over the motifs in the sequence.
+
+        :return: An iterator over the motifs.
+        :rtype: ty.Iterator[Motif]
+        """
+        return iter(self._motifs)
+    
+    def __str__(self) -> str:
+        """Convert the sequence to a string representation.
+
+        :return: The string representation of the sequence.
+        :rtype: str
+        """
+        return "".join(str(motif) for motif in self._motifs)
+
     def insert(self, index: int, motif: Motif) -> None:
         """Insert the motif at the specified index.
 
@@ -70,6 +86,11 @@ class Sequence:
             raise ValueError("The motif must be a motif object.")
 
         self._motifs.insert(index, motif)
+
+    def tag(self) -> None:
+        """Tag all motifs in the sequence."""
+        for motif_idx, motif in enumerate(self._motifs):
+            motif.set_tag(motif_idx)
 
     def clear_tags(self) -> None:
         """Clear the tags for all motifs in the sequence."""

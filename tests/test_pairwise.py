@@ -6,8 +6,10 @@ import typing as ty
 import unittest
 
 from versalign.motif import Gap, Motif
-from versalign.pairwise import align_sequences
+from versalign.pairwise import PairwiseAlignment, align_pairwise
 from versalign.sequence import Sequence
+
+GLOBAL = PairwiseAlignment.NEEDLEMAN_WUNSCH
 
 
 class A(Motif):
@@ -79,56 +81,38 @@ class TestPairwise(unittest.TestCase):
         """Test aligning two sequences."""
         seq_a = Sequence([A(), A(), A(), A()])
         seq_b = Sequence([B(), B(), B(), B()])
-        alignment = align_sequences(seq_a, seq_b, 2, 1, score_func)
-        expected = [
-            (Gap(), B()),
-            (Gap(), B()),
-            (Gap(), B()),
-            (Gap(), B()),
-            (A(), Gap()),
-            (A(), Gap()),
-            (A(), Gap()),
-            (A(), Gap()),
-        ]
-        self.assertEqual(alignment, expected)
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
+        expected_a = [Gap(), Gap(), Gap(), Gap(), A(), A(), A(), A()]
+        expected_b = [B(), B(), B(), B(), Gap(), Gap(), Gap(), Gap()]
+        self.assertEqual(result_a._motifs, expected_a)
+        self.assertEqual(result_b._motifs, expected_b)
 
     def test_align_sequence_2(self):
         """Test aligning two sequences."""
         seq_a = Sequence([A(), A(), A(), A()])
         seq_b = Sequence([A(), A(), A(), A()])
-        alignment = align_sequences(seq_a, seq_b, 2, 1, score_func)
-        expected = [
-            (A(), A()),
-            (A(), A()),
-            (A(), A()),
-            (A(), A()),
-        ]
-        self.assertEqual(alignment, expected)
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
+        expected_a = [A(), A(), A(), A()]
+        expected_b = [A(), A(), A(), A()]
+        self.assertEqual(result_a._motifs, expected_a)
+        self.assertEqual(result_b._motifs, expected_b)
 
     def test_align_sequence_3(self):
         """Test aligning two sequences."""
         seq_a = Sequence([A(), A(), B(), B()])
         seq_b = Sequence([B(), B(), C(), C()])
-        alignment = align_sequences(seq_a, seq_b, 2, 1, score_func)
-        expected = [
-            (A(), Gap()),
-            (A(), Gap()),
-            (B(), B()),
-            (B(), B()),
-            (Gap(), C()),
-            (Gap(), C()),
-        ]
-        self.assertEqual(alignment, expected)
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
+        expected_a = [A(), A(), B(), B(), Gap(), Gap()]
+        expected_b = [Gap(), Gap(), B(), B(), C(), C()]
+        self.assertEqual(result_a._motifs, expected_a)
+        self.assertEqual(result_b._motifs, expected_b)
 
     def test_align_sequence_4(self):
         """Test aligning two sequences."""
         seq_a = Sequence([A(), A(), A()])
         seq_b = Sequence([A(), A(), A(), A()])
-        alignment = align_sequences(seq_a, seq_b, 1, 2, score_func)
-        expected = [
-            (Gap(), A()),
-            (A(), A()),
-            (A(), A()),
-            (A(), A()),
-        ]
-        self.assertEqual(alignment, expected)
+        result_a, result_b, _ = align_pairwise(seq_a, seq_b, 1, 2, score_func, GLOBAL)
+        expected_a = [Gap(), A(), A(), A()]
+        expected_b = [A(), A(), A(), A()]
+        self.assertEqual(result_a._motifs, expected_a)
+        self.assertEqual(result_b._motifs, expected_b)
