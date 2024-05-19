@@ -34,9 +34,76 @@
 
 Versalign is Python package that allows you to create multiple sequence alignments for arbitrary lists of objects.
 
-<!-- ## 💪 Getting Started
+## 💪 Getting Started
 
-... -->
+Pairwise alignment:
+
+```python
+from versalign.motif import Motif
+from versalign.pairwise import PairwiseAlignment, align_pairwise
+from versalign.sequence import Sequence
+
+class A(Motif):
+    def __eq__(self, other):
+        return isinstance(other, A)
+    
+    def __str__(self):
+        return "A"
+
+class B(Motif):
+    def __eq__(self, other):
+        return isinstance(other, B)
+    
+    def __str__(self):
+        return "B"
+
+def score_func(a, b):
+    if a == b:
+        return 1
+    return -1
+
+seq_a = Sequence([A(), A(), A()])
+seq_b = Sequence([B(), B(), B()])
+
+aligned_seq_a, aligned_seq_b, score = align_pairwise(
+    seq_a=seq_a,
+    seq_b=seq_b,
+    gap_penalty=2,
+    end_gap_penalty=1,
+    score_func=score_func,
+    algorithm=PairwiseAlignment.NEEDLEMAN_WUNSCH
+)
+
+print(aligned_seq_a)
+print(aligned_seq_b)
+
+>> AAA---
+>> ---BBB
+```
+
+Multiple sequence alignment:
+
+```python
+from versalign.msa import multiple_sequence_alignment
+
+seq_a = Sequence([A(), A(), A()])
+seq_b = Sequence([B(), B(), B()])
+seq_c = Sequence([A(), B(), B()])
+
+result = multiple_sequence_alignment(
+    seqs=[seq_a, seq_b, seq_c],
+    gap_penalty=2,
+    end_gap_penalty=1,
+    score_func=score_func,
+)
+
+for seq in result:
+    print(seq)
+
+>> ---BBB
+>> --ABB-
+>> AAA---
+```
 
 ## 🚀 Installation
 
