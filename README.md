@@ -62,8 +62,8 @@ def score_func(a, b):
         return 1
     return -1
 
-seq_a = Sequence([A(), A(), A()])
-seq_b = Sequence([B(), B(), B()])
+seq_a = Sequence("seq_a", [A(), A(), A()])
+seq_b = Sequence("seq_b", [B(), B(), B()])
 
 aligned_seq_a, aligned_seq_b, score = align_pairwise(
     seq_a=seq_a,
@@ -86,9 +86,9 @@ Multiple sequence alignment:
 ```python
 from versalign.msa import multiple_sequence_alignment
 
-seq_a = Sequence([A(), A(), A()])
-seq_b = Sequence([B(), B(), B()])
-seq_c = Sequence([A(), B(), B()])
+seq_a = Sequence("seq_a", [A(), A(), A()])
+seq_b = Sequence("seq_b", [B(), B(), B()])
+seq_c = Sequence("seq_c", [A(), B(), B()])
 
 result = multiple_sequence_alignment(
     seqs=[seq_a, seq_b, seq_c],

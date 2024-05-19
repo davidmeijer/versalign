@@ -79,8 +79,8 @@ class TestPairwise(unittest.TestCase):
 
     def test_align_sequence_1(self):
         """Test aligning two sequences."""
-        seq_a = Sequence([A(), A(), A(), A()])
-        seq_b = Sequence([B(), B(), B(), B()])
+        seq_a = Sequence("seq_a", [A(), A(), A(), A()])
+        seq_b = Sequence("seq_b", [B(), B(), B(), B()])
         result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
         expected_a = [Gap(), Gap(), Gap(), Gap(), A(), A(), A(), A()]
         expected_b = [B(), B(), B(), B(), Gap(), Gap(), Gap(), Gap()]
@@ -89,8 +89,8 @@ class TestPairwise(unittest.TestCase):
 
     def test_align_sequence_2(self):
         """Test aligning two sequences."""
-        seq_a = Sequence([A(), A(), A(), A()])
-        seq_b = Sequence([A(), A(), A(), A()])
+        seq_a = Sequence("seq_a", [A(), A(), A(), A()])
+        seq_b = Sequence("seq_b", [A(), A(), A(), A()])
         result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
         expected_a = [A(), A(), A(), A()]
         expected_b = [A(), A(), A(), A()]
@@ -99,8 +99,8 @@ class TestPairwise(unittest.TestCase):
 
     def test_align_sequence_3(self):
         """Test aligning two sequences."""
-        seq_a = Sequence([A(), A(), B(), B()])
-        seq_b = Sequence([B(), B(), C(), C()])
+        seq_a = Sequence("seq_a", [A(), A(), B(), B()])
+        seq_b = Sequence("seq_b", [B(), B(), C(), C()])
         result_a, result_b, _ = align_pairwise(seq_a, seq_b, 2, 1, score_func, GLOBAL)
         expected_a = [A(), A(), B(), B(), Gap(), Gap()]
         expected_b = [Gap(), Gap(), B(), B(), C(), C()]
@@ -109,8 +109,8 @@ class TestPairwise(unittest.TestCase):
 
     def test_align_sequence_4(self):
         """Test aligning two sequences."""
-        seq_a = Sequence([A(), A(), A()])
-        seq_b = Sequence([A(), A(), A(), A()])
+        seq_a = Sequence("seq_a", [A(), A(), A()])
+        seq_b = Sequence("seq_b", [A(), A(), A(), A()])
         result_a, result_b, _ = align_pairwise(seq_a, seq_b, 1, 2, score_func, GLOBAL)
         expected_a = [Gap(), A(), A(), A()]
         expected_b = [A(), A(), A(), A()]

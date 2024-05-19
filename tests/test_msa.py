@@ -77,9 +77,9 @@ class TestPairwiseScoringMatrix(unittest.TestCase):
 
     def test_pairwise_scoring_matrix_1(self) -> None:
         """Test the pairwise_scoring_matrix function."""
-        seq1 = Sequence([A(), A(), A(), A()])
-        seq2 = Sequence([B(), B(), B(), B()])
-        seq3 = Sequence([C(), C(), C(), C()])
+        seq1 = Sequence("seq_a", [A(), A(), A(), A()])
+        seq2 = Sequence("seq_b", [B(), B(), B(), B()])
+        seq3 = Sequence("seq_c", [C(), C(), C(), C()])
         seqs = [seq1, seq2, seq3]
         matrix = pairwise_scoring_matrix(seqs, 2, 1, score_func)
         self.assertEqual(matrix.min_value, 0.0)
@@ -87,9 +87,9 @@ class TestPairwiseScoringMatrix(unittest.TestCase):
 
     def test_pairwise_scoring_matrix_2(self) -> None:
         """Test the pairwise_scoring_matrix function."""
-        seq1 = Sequence([A(), A(), A(), A()])
-        seq2 = Sequence([A(), A(), A(), A()])
-        seq3 = Sequence([B(), B(), B(), B()])
+        seq1 = Sequence("seq_a", [A(), A(), A(), A()])
+        seq2 = Sequence("seq_b", [A(), A(), A(), A()])
+        seq3 = Sequence("seq_c", [B(), B(), B(), B()])
         seqs = [seq1, seq2, seq3]
         matrix = pairwise_scoring_matrix(seqs, 2, 1, score_func)
         self.assertEqual(matrix.min_value, 0.0)
@@ -97,9 +97,9 @@ class TestPairwiseScoringMatrix(unittest.TestCase):
 
     def test_pairwise_scoring_matrix_3(self) -> None:
         """Test the pairwise_scoring_matrix function."""
-        seq1 = Sequence([A(), A(), A(), A()])
-        seq2 = Sequence([A(), A(), A(), A()])
-        seq3 = Sequence([A(), A(), A(), A()])
+        seq1 = Sequence("seq_a", [A(), A(), A(), A()])
+        seq2 = Sequence("seq_b", [A(), A(), A(), A()])
+        seq3 = Sequence("seq_c", [A(), A(), A(), A()])
         seqs = [seq1, seq2, seq3]
         matrix = pairwise_scoring_matrix(seqs, 2, 1, score_func)
         self.assertEqual(matrix.min_value, 4.0)
@@ -111,9 +111,9 @@ class TestMultipleSequenceAlignment(unittest.TestCase):
 
     def test_multiple_sequence_alignment_1(self) -> None:
         """Test the multiple_sequence_alignment function."""
-        seq1 = Sequence([A(), A(), A(), A()])
-        seq2 = Sequence([B(), B(), B(), B()])
-        seq3 = Sequence([C(), C(), C(), C()])
+        seq1 = Sequence("seq_a", [A(), A(), A(), A()])
+        seq2 = Sequence("seq_b", [B(), B(), B(), B()])
+        seq3 = Sequence("seq_c", [C(), C(), C(), C()])
         seqs = [seq1, seq2, seq3]
         result = multiple_sequence_alignment(seqs, 2, 1, score_func)
         self.assertEqual(len(result), 3)
@@ -122,9 +122,9 @@ class TestMultipleSequenceAlignment(unittest.TestCase):
 
     def test_multiple_sequence_alignment_2(self) -> None:
         """Test the multiple_sequence_alignment function."""
-        seq1 = Sequence([A(), A(), A(), A()])
-        seq2 = Sequence([B(), B(), B(), B()])
-        seq3 = Sequence([B(), B(), B(), B()])
+        seq1 = Sequence("seq_a", [A(), A(), A(), A()])
+        seq2 = Sequence("seq_b", [B(), B(), B(), B()])
+        seq3 = Sequence("seq_c", [B(), B(), B(), B()])
         seqs = [seq1, seq2, seq3]
         result = multiple_sequence_alignment(seqs, 2, 1, score_func)
         self.assertEqual(len(result), 3)

@@ -269,8 +269,8 @@ def align_pairwise(
             end_gap_penalty=end_gap_penalty,
         )
 
-        seq_a_aligned = Sequence([motif_a for motif_a, _ in aligned])
-        seq_b_aligned = Sequence([motif_b for _, motif_b in aligned])
+        seq_a_aligned = Sequence(seq_a.identifier, [motif_a for motif_a, _ in aligned])
+        seq_b_aligned = Sequence(seq_b.identifier, [motif_b for _, motif_b in aligned])
 
         logger.debug("Sequences aligned.")
         return seq_a_aligned, seq_b_aligned, alignment_score

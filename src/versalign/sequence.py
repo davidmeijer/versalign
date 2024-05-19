@@ -10,13 +10,17 @@ from .motif import Motif
 class Sequence:
     """Class for representing a sequence object."""
 
-    def __init__(self, motifs: ty.Optional[ty.List[Motif]] = None) -> None:
+    def __init__(self, identifier: str, motifs: ty.Optional[ty.List[Motif]] = None) -> None:
         """Initialize the sequence object.
 
+        :param identifier: The identifier of the sequence.
+        :type identifier: str
         :param motifs: The list of motifs in the sequence.
         :type motifs: ty.Optional[ty.List[Motif]]
         :raises ValueError: If any element in the list is not a motif.
         """
+        self._identifier = identifier
+
         if motifs is None:
             motifs = []
 
@@ -72,6 +76,15 @@ class Sequence:
         :rtype: str
         """
         return "".join(str(motif) for motif in self._motifs)
+
+    @property
+    def identifier(self) -> str:
+        """Return the identifier of the sequence.
+
+        :return: The identifier of the sequence.
+        :rtype: str
+        """
+        return self._identifier
 
     def insert(self, index: int, motif: Motif) -> None:
         """Insert the motif at the specified index.
